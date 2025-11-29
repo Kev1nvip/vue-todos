@@ -65,9 +65,18 @@ export default {
   margin-top: 16px;
   padding: 0 12px;
   box-sizing: border-box;
-  /* 关键：限制容器最大宽度为屏幕宽度（减去内边距），避免横向溢出 */
-  max-width: calc(100vw - 24px);
-  overflow-x: hidden; /* 隐藏横向滚动条 */
+  max-width: 750px; /* 桌面端最大宽度 */
+  margin-left: auto; /* 水平居中 */
+  margin-right: auto;
+  overflow-x: hidden;
+}
+
+/* 移动端容器强制居中并限制宽度 */
+@media (max-width: 767px) {
+  .tdContainer {
+    max-width: calc(100vw - 32px); /* 屏幕宽度减去左右边距 */
+    padding: 0 8px;
+  }
 }
 
 .tdList {
@@ -76,9 +85,7 @@ export default {
   text-align: left;
   background-color: #fff;
   border-radius: 10px;
-  width: 100%;
-  /* 移除固定max-width，改为随容器自适应 */
-  max-width: 100%;
+  width: 100%; /* 占满容器宽度 */
   margin: 0 auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
@@ -90,22 +97,42 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: flex-start;
-  /* 关键：取消justify-content: space-between，避免强制撑开宽度 */
   gap: 12px;
   transition: background-color 0.2s ease;
-  overflow: visible;
   width: 100%;
   box-sizing: border-box;
+  position: relative; /* 为按钮区域定位提供基准 */
 }
 
-/* 文本区域 - 核心限制宽度 */
+/* 修复按钮不显示问题 - 始终显示按钮（移动端优化） */
+.tdItem-acts {
+  display: flex; /* 强制显示按钮 */
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+  max-width: 150px;
+  margin-left: auto; /* 靠右对齐 */
+  padding: 4px 0;
+}
+
+/* 鼠标悬停时按钮样式增强（仅桌面端） */
+@media (min-width: 768px) {
+  .tdItem-acts {
+    opacity: 0.7; /* 初始半透明 */
+    transition: opacity 0.2s;
+  }
+  .tdItem:hover .tdItem-acts {
+    opacity: 1; /* 悬停时完全显示 */
+  }
+}
+
+/* 文本区域 */
 .tdItem-main {
   display: flex;
   align-items: flex-start;
   flex: 1;
   min-width: 0;
-  /* 确保文本区域不超过容器宽度（减去按钮区域最小宽度） */
-  max-width: calc(100% - 160px);
+  max-width: calc(100% - 160px); /* 预留按钮区域宽度 */
 }
 
 .tdContent {
@@ -125,72 +152,15 @@ export default {
 .tdTxt {
   padding-left: 0;
   font-size: 13px;
-  display: inline-block;
   line-height: 1.6;
   white-space: normal;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  overflow: visible;
-  min-width: 0;
-  /* 文本最大宽度限制为父容器的100%，确保不溢出 */
   max-width: 100%;
+  color: #333;
 }
 
-/* 按钮区域 - 严格控制宽度 */
-.tdItem-acts {
-  display: none;
-  gap: 6px;
-  align-items: center;
-  flex-shrink: 0;
-  /* 固定按钮区域最大宽度，避免挤压文本 */
-  max-width: 150px;
-  width: auto;
-  margin-left: auto;
-  padding: 4px 0;
-}
-
-/* 移动端强制按钮区域不撑开容器 */
-@media (max-width: 767px) {
-  .tdContainer {
-    /* 进一步收紧容器宽度，留足安全距离 */
-    max-width: calc(100vw - 32px);
-    padding: 0 8px;
-  }
-
-  .tdItem {
-    padding: 10px 12px;
-  }
-
-  .tdItem-main {
-    /* 移动端文本区域占比更高 */
-    max-width: calc(100% - 140px);
-  }
-
-  .tdItem-acts {
-    max-width: 130px;
-    gap: 4px;
-  }
-
-  /* 长文本时按钮区域允许换行到下方 */
-  .tdItem {
-    flex-wrap: wrap;
-  }
-}
-
-/* 其他原有样式保持不变 */
-.tdItem:hover {
-  background-color: #f5f8ff;
-  border-bottom-color: #e8f0fe;
-}
-
-.tdItem:hover .completed {
-  color: #888;
-}
-
-.tdItem:last-child {
-  border-bottom: 0;
-}
-
+/* 复选框样式 */
 .tdToggle {
   cursor: pointer;
   width: 20px;
@@ -233,10 +203,6 @@ export default {
   text-decoration: line-through;
   color: #999;
   transition: color 0.2s ease;
-}
-
-.tdTxt:not(.completed) {
-  color: #333;
 }
 
 .top-tag {
@@ -324,16 +290,8 @@ export default {
   border-color: #f5222d;
 }
 
+/* 桌面端适配 */
 @media (min-width: 768px) {
-  .tdContainer {
-    padding: 0;
-    max-width: 750px; /* 桌面端恢复固定宽度 */
-  }
-
-  .tdList {
-    max-width: 750px;
-  }
-
   .tdItem {
     padding: 12px 20px;
     gap: 20px;
@@ -374,6 +332,34 @@ export default {
 
   .tdItem:hover {
     background-color: #eaf2ff;
+    border-bottom-color: #e8f0fe;
+  }
+}
+
+/* 移动端按钮适配 */
+@media (max-width: 767px) {
+  .tdItem {
+    flex-wrap: wrap; /* 长文本时按钮自动换行到下方 */
+  }
+  
+  .tdItem-acts {
+    max-width: 130px;
+    gap: 4px;
+  }
+  
+  .tdItem-main {
+    max-width: calc(100% - 140px);
+  }
+  
+  .priority-select {
+    padding: 1px 3px;
+    font-size: 10px;
+  }
+  
+  .top-btn, .del-btn {
+    font-size: 11px;
+    padding: 2px 4px;
+    min-width: 30px;
   }
 }
 </style>
