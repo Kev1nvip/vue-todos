@@ -1,5 +1,83 @@
-# Vue 3 + Vite
+# Vue 待办事项应用（Todo App）
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+一个基于 Vue 3 + Vite 开发的轻量、实用待办事项管理工具，专注于本地数据存储（浏览器 localStorage），无需后端和网络依赖，数据持久化不丢失，支持核心任务管理功能。
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 在线访问
+
+部署地址：[vue4todos](https://vue4todos.netlify.app/)
+
+## 核心功能
+ 
+1. 待办事项管理：支持添加待办事项，输入内容后按回车即可添加，最多输入50个字符，超过会提示限制。
+2. 待办状态管理：可通过复选框标记待办事项为已完成或未完成，已完成事项会显示删除线。
+3. 优先级管理：每个待办事项可设置高、中、低优先级，不同优先级通过不同颜色标签区分，可在下拉菜单中修改优先级。
+4. 置顶功能：支持对待办事项进行置顶或取消置顶操作，置顶事项会显示“置顶”标签。
+5. 筛选查看：提供全部、未完成、已完成三种筛选视图，可通过底部标签切换，实时显示当前视图下的事项数量。
+6. 排序功能：事项默认按置顶状态和优先级排序，置顶事项排在前面，优先级高的事项在前。
+7. 删除功能：可直接删除不需要的待办事项。
+8. 数据持久化：待办事项数据会保存在本地存储中，刷新页面后数据不丢失。
+9. 时间显示：每个待办事项会显示创建时间，格式为“年-月-日 时:分”。
+10. 响应式设计：适配移动端和桌面端不同屏幕尺寸，提供良好的浏览和操作体验。
+
+## 技术栈
+
+- 前端框架：Vue 3
+- 构建工具：Vite
+- 数据存储：浏览器 localStorage
+- 样式：原生 CSS  
+
+## 本地开发
+
+### 1. 环境准备
+
+确保已安装 Node.js（v14+）和 npm
+
+### 2. 克隆仓库
+
+```bash
+git clone ssh://git@ssh.github.com:443/Kev1nvip/vue-todos.git
+cd vue-todos
+```
+
+### 3. 安装依赖
+
+```bash
+npm install
+```
+
+### 4. 启动本地服务
+
+无需额外配置（无后端/云端依赖），直接启动：
+
+```bash
+npm run dev
+```
+
+访问 `http://localhost:5173` 即可使用，所有数据自动存储在本地浏览器 localStorage 中。
+
+## 打包部署
+
+```bash
+npm run build
+```
+
+生成 `dist` 文件夹（静态资源，可直接部署或本地打开使用）
+
+## 项目结构
+
+```
+src/
+├── components/       # 功能组件目录
+│   ├── TodoHeader.vue  # 头部组件
+│   ├── TodoList.vue    # 主体组件
+│   └── TodoFooter.vue  # 底部组件
+├── App.vue           # 根组件
+└── main.js           # 入口文件
+```
+
+## 数据存储说明
+
+- 所有任务数据存储在浏览器 `localStorage` 中，键名为 `vue-todos`
+- 数据仅保存在当前访问设备的浏览器中，隐私安全无泄露风险
+- 支持清除浏览器缓存（需手动操作），清除后数据会重置
+

@@ -106,25 +106,34 @@ export default {
   <TodoFooter :tabType="tabType" :count="todoList.length" @changeTabType="changeTabType"></TodoFooter>
 </template>
 
-<style >
-html,
-body {
+<style>
+/* 移动端重置：清除默认边距、适配触摸元素 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 关键：边框和内边距不占用额外宽度 */
+  -webkit-tap-highlight-color: transparent; /* 清除手机点击元素时的蓝色高亮 */
+}
+
+/* 确保页面在小屏幕不横向滚动 */
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* 禁止横向滚动 */
   background-color: #f5f5f5;
 }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+/* 全局按钮/交互元素：优化手机触摸体验 */
+button, input, select, a {
+  -webkit-appearance: none; /* 清除 iOS 默认样式 */
+  appearance: none;
+  outline: none; /* 清除聚焦外边框 */
 }
 
-.container {
-  max-width: 980px; 
-  min-height: 100%;
-  margin: 0 auto; 
-  padding: 0 10px; 
+/* 适配 TodoList 容器：小屏幕自动收缩，不溢出 */
+.todo-list-wrapper {
+  width: 100%;
+  max-width: calc(50ch + 150px); /* 保持 50字符+按钮宽度 */
+  padding: 0 12px; /* 手机端左右留白，避免紧贴屏幕 */
+  margin: 0 auto;
 }
 </style>

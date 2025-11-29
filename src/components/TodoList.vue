@@ -3,7 +3,12 @@
     <ul class="tdList">
       <li class="tdItem" v-for="item in todos" :key="item.id">
         <div class="tdItem-main">
-          <input type="checkbox" v-model="item.completed" class="tdToggle" />
+          <input 
+            type="checkbox" 
+            v-model="item.completed" 
+            class="tdToggle" 
+            aria-label="标记完成"
+          />
           <div class="tdContent">
             <div class="tdTxt-wrap">
               <span class="priority-tag" :style="{ backgroundColor: getPriorityColor(item.priority) }"></span>
@@ -56,52 +61,87 @@ export default {
 </script>
 
 <style scoped>
+.tdContainer {
+  margin-top: 16px;
+  padding: 0 12px;
+}
+
 .tdList {
   list-style: none;
   padding: 0;
   text-align: left;
   background-color: #fff;
   border-radius: 10px;
-  width: calc(50ch + 220px);
+  width: 100%;
+  max-width: 750px;
   margin: 0 auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .tdItem {
-  padding: 10px 20px; 
-  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s;
-  overflow: hidden; 
-  position: relative; 
+  justify-content: space-between;
+  gap: 16px;
+  transition: background-color 0.2s ease; /* 平滑过渡背景色 */
+  overflow: hidden;
+  width: 100%;
+}
+
+/* 核心修改：鼠标悬浮背景变色，突出显示 */
+.tdItem:hover {
+  background-color: #f5f8ff; /* 淡蓝色背景，醒目且不刺眼 */
+  border-bottom-color: #e8f0fe; /*  hover时边框同步变色，更协调 */
+}
+
+/* 已完成任务hover时背景色稍浅，区分状态 */
+.tdItem:hover .completed {
+  color: #888;
 }
 
 .tdItem:last-child {
   border-bottom: 0;
 }
 
-.tdItem:hover {
-  background-color: #fafafa;
-}
-
+/* 复选框样式 */
 .tdToggle {
   cursor: pointer;
-  width: 16px;
-  height: 16px;
-  margin-top: 2px;
-  margin-right: 10px;
-  flex-shrink: 0; 
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+  margin-right: 8px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
 }
 
+.tdToggle:checked {
+  background-color: #4e6ef2;
+  border-color: #4e6ef2;
+}
+
+.tdToggle:checked::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 文本区域 */
 .tdItem-main {
   display: flex;
   align-items: center;
   flex: 1;
-  
-  
+  max-width: 60ch;
   overflow: hidden;
 }
 
@@ -109,13 +149,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1; 
-  overflow: hidden; 
-  
-}
-
-.tdContainer {
-  margin-top: 16px; 
+  flex: 1;
+  overflow: hidden;
 }
 
 .tdTxt-wrap {
@@ -124,31 +159,36 @@ export default {
 }
 
 .priority-tag {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .tdTxt {
   padding-left: 0;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.4;
 }
 
 .completed {
   text-decoration: line-through;
   color: #999;
+  transition: color 0.2s ease; /* 颜色平滑过渡 */
 }
 
 .top-tag {
   background-color: #ff7a45;
   color: #fff;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-left: 8px;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  margin-left: 6px;
   vertical-align: middle;
 }
 
@@ -157,48 +197,60 @@ export default {
 }
 
 .tdCreateTime {
-  padding-left: 18px;
-  font-size: 11px;
+  padding-left: 14px;
+  font-size: 10px;
   color: #bbb;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .completed+.tdCreateTime {
   color: #ccc;
 }
 
+/* 按钮区域 */
 .tdItem-acts {
-  display: none;
-  gap: 10px;
+  display: flex;
+  gap: 8px;
   align-items: center;
-  position: absolute; 
-  right: 8px; 
-  top: 50%;
-  transform: translateY(-50%); 
-  background-color: inherit; 
+  flex-shrink: 0;
+  min-width: 180px;
 }
 
+.tdItem-acts {
+  display: none;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 180px;
+}
 .tdItem:hover .tdItem-acts {
   display: flex;
 }
 
 .priority-select {
-  padding: 2px 6px;
+  padding: 1px 4px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
   background-color: #fff;
+  flex-shrink: 0;
 }
 
 .top-btn,
 .del-btn {
   text-decoration: none;
   cursor: pointer;
-  font-size: 13px;
-  padding: 4px 8px;
+  font-size: 12px;
+  padding: 3px 6px;
   border-radius: 4px;
   transition: all 0.2s;
+  min-width: 36px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .top-btn {
@@ -232,5 +284,56 @@ export default {
 .del-btn:hover {
   background-color: #f5222d;
   border-color: #f5222d;
+}
+
+/* 桌面端适配 */
+@media (min-width: 768px) {
+  .tdContainer {
+    padding: 0;
+  }
+
+  .tdList {
+    max-width: 750px;
+  }
+
+  .tdItem {
+    padding: 12px 20px;
+    gap: 20px;
+  }
+
+  .tdToggle {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+
+  .tdItem-main {
+    max-width: 60ch;
+  }
+
+  .tdTxt {
+    font-size: 14px;
+  }
+
+  .tdItem-acts {
+    gap: 10px;
+    min-width: 200px;
+  }
+
+  .priority-select {
+    padding: 2px 6px;
+    font-size: 12px;
+  }
+
+  .top-btn,
+  .del-btn {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+
+  /* 桌面端hover背景色稍深，突出效果更明显 */
+  .tdItem:hover {
+    background-color: #eaf2ff;
+  }
 }
 </style>
