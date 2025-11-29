@@ -35,13 +35,13 @@ export default {
 .tdFooter {
     background-color: #fff;
     max-width: 750px;
-    margin: 0 auto;
-    padding: 0 16px;
+    margin: 16px auto;
+    padding: 10px 20px;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     /* 确保文字不被遮挡，增加字体可见性 */
-    font-size: 14px;
+    font-size: 15px;
     color: #333; /* 避免继承父元素的透明色 */
 }
 

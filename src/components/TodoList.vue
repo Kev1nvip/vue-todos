@@ -245,6 +245,8 @@ export default {
   min-width: 36px;
   text-align: center;
   flex-shrink: 0;
+  opacity: 0.6; /* 透明度降低，视觉上淡化 */
+  transform: scale(0.95); /* 轻微缩小，增强淡化效果 */
 }
 
 .top-btn {
@@ -256,6 +258,8 @@ export default {
 .top-btn:hover {
   color: #096dd9;
   background-color: #e6f7ff;
+  opacity: 1; /* 完全不透明 */
+  transform: scale(1); /* 恢复原尺寸 */
 }
 
 .top-btn:has(+ .del-btn) {
@@ -278,6 +282,8 @@ export default {
 .del-btn:hover {
   background-color: #f5222d;
   border-color: #f5222d;
+  opacity: 1; /* 完全不透明 */
+  transform: scale(1); /* 恢复原尺寸 */
 }
 
 @media (min-width: 768px) {
