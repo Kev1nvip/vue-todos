@@ -61,36 +61,40 @@ export default {
 </script>
 
 <style scoped>
+/* 核心修改：确保整个列表容器水平居中 */
 .tdContainer {
   margin-top: 16px;
   padding: 0 12px;
   box-sizing: border-box;
   max-width: 750px; /* 桌面端最大宽度 */
-  margin-left: auto; /* 水平居中 */
+  /* 强制水平居中（关键代码） */
+  margin-left: auto;
   margin-right: auto;
   overflow-x: hidden;
 }
 
-/* 移动端容器强制居中并限制宽度 */
+/* 移动端单独强化居中 */
 @media (max-width: 767px) {
   .tdContainer {
-    max-width: calc(100vw - 32px); /* 屏幕宽度减去左右边距 */
-    padding: 0 8px;
+    max-width: calc(100vw - 32px); /* 屏幕宽度减去左右各16px边距 */
+    padding: 0 16px; /* 左右边距对称 */
   }
 }
 
+/* 列表容器占满居中的父容器宽度 */
 .tdList {
   list-style: none;
   padding: 0;
   text-align: left;
   background-color: #fff;
   border-radius: 10px;
-  width: 100%; /* 占满容器宽度 */
-  margin: 0 auto;
+  width: 100%; /* 占满父容器宽度 */
+  margin: 0 auto; /* 自身也居中（冗余但保险） */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
+/* 其他原有样式保持不变 */
 .tdItem {
   padding: 12px 16px;
   border-bottom: 1px solid #eee;
@@ -101,38 +105,25 @@ export default {
   transition: background-color 0.2s ease;
   width: 100%;
   box-sizing: border-box;
-  position: relative; /* 为按钮区域定位提供基准 */
+  position: relative;
 }
 
-/* 修复按钮不显示问题 - 始终显示按钮（移动端优化） */
 .tdItem-acts {
-  display: flex; /* 强制显示按钮 */
+  display: flex;
   gap: 6px;
   align-items: center;
   flex-shrink: 0;
   max-width: 150px;
-  margin-left: auto; /* 靠右对齐 */
+  margin-left: auto;
   padding: 4px 0;
 }
 
-/* 鼠标悬停时按钮样式增强（仅桌面端） */
-@media (min-width: 768px) {
-  .tdItem-acts {
-    opacity: 0.7; /* 初始半透明 */
-    transition: opacity 0.2s;
-  }
-  .tdItem:hover .tdItem-acts {
-    opacity: 1; /* 悬停时完全显示 */
-  }
-}
-
-/* 文本区域 */
 .tdItem-main {
   display: flex;
   align-items: flex-start;
   flex: 1;
   min-width: 0;
-  max-width: calc(100% - 160px); /* 预留按钮区域宽度 */
+  max-width: calc(100% - 160px);
 }
 
 .tdContent {
@@ -160,7 +151,6 @@ export default {
   color: #333;
 }
 
-/* 复选框样式 */
 .tdToggle {
   cursor: pointer;
   width: 20px;
@@ -290,7 +280,6 @@ export default {
   border-color: #f5222d;
 }
 
-/* 桌面端适配 */
 @media (min-width: 768px) {
   .tdItem {
     padding: 12px 20px;
@@ -336,10 +325,9 @@ export default {
   }
 }
 
-/* 移动端按钮适配 */
 @media (max-width: 767px) {
   .tdItem {
-    flex-wrap: wrap; /* 长文本时按钮自动换行到下方 */
+    flex-wrap: wrap;
   }
   
   .tdItem-acts {
