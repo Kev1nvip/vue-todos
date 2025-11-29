@@ -34,8 +34,10 @@ export default {
 <style scoped>
 .tdFooter {
     background-color: #fff;
-    padding: 10px 20px;
-    margin: 20px 0;
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     /* 确保文字不被遮挡，增加字体可见性 */

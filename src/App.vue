@@ -115,6 +115,13 @@ export default {
   -webkit-tap-highlight-color: transparent; /* 清除手机点击元素时的蓝色高亮 */
 }
 
+#app {
+  max-width: 750px; /* 与列表最大宽度一致 */
+  margin: 0 auto; /* 强制页面整体水平居中 */
+  padding: 0 16px; /* 左右对称边距 */
+  box-sizing: border-box;
+}
+
 /* 确保页面在小屏幕不横向滚动 */
 html, body {
   width: 100%;

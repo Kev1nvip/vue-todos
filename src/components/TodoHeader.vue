@@ -47,6 +47,8 @@ export default{
   padding: 0 12px;
   /* 新增容器内边距统一管理 */
   box-sizing: border-box;
+  max-width: 750px;
+  margin: 0 auto;
 }
 
 .hdTitle {
