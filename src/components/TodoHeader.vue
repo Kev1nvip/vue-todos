@@ -55,15 +55,19 @@ export default{
 }
 
 .newTodo {
+  /* 移除黑色背景，恢复默认白色 */
+  background-color: #fff;
+  color: #333; /* 确保输入文字可见 */
+  /* 其他原有样式 */
   width: 100%;
   padding: 14px 16px;
   border: 1px solid #eee;
   border-radius: 10px;
   font-size: 15px;
-  box-sizing: border-box; /* 确保padding不影响宽度计算 */
-  max-width: 500px;
+  box-sizing: border-box;
+  min-width: unset;
+  max-width: 650px; /* 适配60字符宽度 */
   margin: 0 auto;
-  display: block; /* 确保输入框作为块级元素保持居中 */
 }
 
 .newTodo:focus {

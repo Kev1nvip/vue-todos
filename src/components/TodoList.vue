@@ -83,11 +83,12 @@ export default {
   border-bottom: 1px solid #eee;
   cursor: pointer;
   display: flex;
+  flex-wrap: wrap; /* 移动端允许按钮区域换行 */
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  transition: background-color 0.2s ease; /* 平滑过渡背景色 */
-  overflow: hidden;
+  gap: 12px; /* 增加间距 */
+  transition: background-color 0.2s ease;
+  overflow: visible; /* 取消溢出隐藏，确保按钮显示 */
   width: 100%;
 }
 
@@ -170,10 +171,12 @@ export default {
   font-size: 13px;
   display: flex;
   align-items: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* 允许长文本换行，避免溢出 */
+  white-space: normal;
+  word-wrap: break-word;
   overflow: hidden;
-  line-height: 1.4;
+  line-height: 1.6; /* 增加行高，提升可读性 */
+  max-width: 50ch; /* 限制宽度，避免挤压按钮 */
 }
 
 .completed {
@@ -213,10 +216,11 @@ export default {
 /* 按钮区域 */
 .tdItem-acts {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   flex-shrink: 0;
-  min-width: 180px;
+  min-width: 150px; /* 移动端缩小按钮区域宽度 */
+  margin-left: auto; /* 确保按钮区域靠右 */
 }
 
 .tdItem-acts {
@@ -312,7 +316,8 @@ export default {
   }
 
   .tdTxt {
-    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .tdItem-acts {
@@ -321,14 +326,15 @@ export default {
   }
 
   .priority-select {
-    padding: 2px 6px;
-    font-size: 12px;
+    padding: 2px 4px;
+    font-size: 10px;
   }
 
   .top-btn,
   .del-btn {
-    font-size: 13px;
-    padding: 4px 8px;
+    font-size: 11px;
+    padding: 2px 5px;
+    min-width: 32px;
   }
 
   /* 桌面端hover背景色稍深，突出效果更明显 */
