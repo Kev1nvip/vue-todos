@@ -64,6 +64,7 @@ export default {
 .tdContainer {
   margin-top: 16px;
   padding: 0 12px;
+  box-sizing: border-box; /* 确保内边距不影响整体宽度 */
 }
 
 .tdList {
@@ -76,6 +77,7 @@ export default {
   max-width: 750px;
   margin: 0 auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
 }
 
 .tdItem {
@@ -83,22 +85,20 @@ export default {
   border-bottom: 1px solid #eee;
   cursor: pointer;
   display: flex;
-  flex-wrap: wrap; /* 移动端允许按钮区域换行 */
-  align-items: center;
+  align-items: flex-start; /* 顶部对齐，避免文本换行后错位 */
   justify-content: space-between;
-  gap: 12px; /* 增加间距 */
+  gap: 12px;
   transition: background-color 0.2s ease;
-  overflow: visible; /* 取消溢出隐藏，确保按钮显示 */
+  overflow: visible;
   width: 100%;
+  box-sizing: border-box; /* 确保padding不导致宽度溢出 */
 }
 
-/* 核心修改：鼠标悬浮背景变色，突出显示 */
 .tdItem:hover {
-  background-color: #f5f8ff; /* 淡蓝色背景，醒目且不刺眼 */
-  border-bottom-color: #e8f0fe; /*  hover时边框同步变色，更协调 */
+  background-color: #f5f8ff;
+  border-bottom-color: #e8f0fe;
 }
 
-/* 已完成任务hover时背景色稍浅，区分状态 */
 .tdItem:hover .completed {
   color: #888;
 }
@@ -107,12 +107,12 @@ export default {
   border-bottom: 0;
 }
 
-/* 复选框样式 */
+/* 复选框样式 - 确保垂直居中 */
 .tdToggle {
   cursor: pointer;
   width: 20px;
   height: 20px;
-  margin-top: 0;
+  margin-top: 2px; /* 微调位置，与首行文本对齐 */
   margin-right: 8px;
   flex-shrink: 0;
   border: 1px solid #ddd;
@@ -137,13 +137,12 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-/* 文本区域 */
+/* 文本区域 - 核心修改 */
 .tdItem-main {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* 顶部对齐，支持多行文本 */
   flex: 1;
-  max-width: 60ch;
-  overflow: hidden;
+  min-width: 0; /* 关键：允许文本区域收缩，避免挤压按钮 */
 }
 
 .tdContent {
@@ -151,12 +150,13 @@ export default {
   flex-direction: column;
   justify-content: center;
   flex: 1;
-  overflow: hidden;
+  min-width: 0; /* 确保文本能被容器约束 */
 }
 
 .tdTxt-wrap {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* 顶部对齐 */
+  min-width: 0;
 }
 
 .priority-tag {
@@ -164,25 +164,32 @@ export default {
   height: 6px;
   border-radius: 50%;
   margin-right: 6px;
+  margin-top: 6px; /* 与文本首行对齐 */
+  flex-shrink: 0;
 }
 
 .tdTxt {
   padding-left: 0;
   font-size: 13px;
-  display: flex;
-  align-items: center;
-  /* 允许长文本换行，避免溢出 */
+  display: inline-block; /* 改为块级显示，确保换行生效 */
+  line-height: 1.6;
+  /* 确保长文本换行并隐藏溢出 */
   white-space: normal;
   word-wrap: break-word;
-  overflow: hidden;
-  line-height: 1.6; /* 增加行高，提升可读性 */
-  max-width: 50ch; /* 限制宽度，避免挤压按钮 */
+  overflow-wrap: break-word;
+  overflow: visible; /* 允许文本自然显示，不截断 */
+  min-width: 0;
 }
 
+/* 确保未完成文本正常显示 */
 .completed {
   text-decoration: line-through;
   color: #999;
-  transition: color 0.2s ease; /* 颜色平滑过渡 */
+  transition: color 0.2s ease;
+}
+/* 新增：未完成文本强制显示黑色 */
+.tdTxt:not(.completed) {
+  color: #333;
 }
 
 .top-tag {
@@ -193,6 +200,7 @@ export default {
   border-radius: 8px;
   margin-left: 6px;
   vertical-align: middle;
+  display: inline-block; /* 避免标签影响文本换行 */
 }
 
 .completed .top-tag {
@@ -203,7 +211,7 @@ export default {
   padding-left: 14px;
   font-size: 10px;
   color: #bbb;
-  margin-top: 2px;
+  margin-top: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -213,25 +221,41 @@ export default {
   color: #ccc;
 }
 
-/* 按钮区域 */
+/* 按钮区域 - 适配移动端 */
 .tdItem-acts {
-  display: flex;
+  display: none;
   gap: 6px;
   align-items: center;
   flex-shrink: 0;
-  min-width: 150px; /* 移动端缩小按钮区域宽度 */
-  margin-left: auto; /* 确保按钮区域靠右 */
+  min-width: 150px;
+  margin-left: auto;
+  padding: 4px 0; /* 垂直居中对齐 */
 }
 
-.tdItem-acts {
-  display: none;
-  gap: 8px;
-  align-items: center;
-  flex-shrink: 0;
-  min-width: 180px;
-}
 .tdItem:hover .tdItem-acts {
   display: flex;
+}
+
+/* 修复按钮区域在小屏幕换行问题 */
+@media (max-width: 767px) {
+  .tdItem-acts {
+    flex-wrap: wrap; /* 允许按钮换行 */
+    justify-content: flex-end; /* 靠右对齐 */
+    gap: 4px;
+    min-width: auto; /* 取消最小宽度限制 */
+    width: auto;
+  }
+  
+  .priority-select {
+    padding: 1px 3px;
+    font-size: 10px;
+  }
+  
+  .top-btn, .del-btn {
+    font-size: 11px;
+    padding: 2px 4px;
+    min-width: 30px;
+  }
 }
 
 .priority-select {
@@ -316,8 +340,10 @@ export default {
   }
 
   .tdTxt {
+    font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .tdItem-acts {
@@ -326,18 +352,16 @@ export default {
   }
 
   .priority-select {
-    padding: 2px 4px;
-    font-size: 10px;
+    padding: 2px 6px;
+    font-size: 12px;
   }
 
   .top-btn,
   .del-btn {
-    font-size: 11px;
-    padding: 2px 5px;
-    min-width: 32px;
+    font-size: 13px;
+    padding: 4px 8px;
   }
 
-  /* 桌面端hover背景色稍深，突出效果更明显 */
   .tdItem:hover {
     background-color: #eaf2ff;
   }
